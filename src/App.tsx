@@ -18,6 +18,23 @@ const VoiceSelect = ({
   </select>
 );
 
+const VoiceEditInput = ({
+  value,
+  setter,
+}: {
+  value: number;
+  setter: React.Dispatch<React.SetStateAction<number>>;
+}) => (
+  <input
+    type="range"
+    onChange={({ target }) => setter(parseFloat(target.value))}
+    value={value}
+    step="0.1"
+    min="1"
+    max="2"
+  />
+);
+
 function App() {
   const synth = useRef<SpeechSynthesis | null>(null);
   const [text, setText] = useState("");
@@ -72,24 +89,10 @@ function App() {
           </button>
         </form>
         <p>rate</p>
-        <input
-          type="range"
-          onChange={({ target }) => setRate(parseFloat(target.value))}
-          value={rate}
-          step="0.1"
-          min="1"
-          max="2"
-        />
+        <VoiceEditInput setter={setRate} value={rate} />
 
         <p>pitch</p>
-        <input
-          type="range"
-          onChange={({ target }) => setPitch(parseFloat(target.value))}
-          step="0.1"
-          value={pitch}
-          min="1"
-          max="2"
-        />
+        <VoiceEditInput setter={setPitch} value={pitch} />
         <p>
           pitch {pitch}, rate {rate}
         </p>
