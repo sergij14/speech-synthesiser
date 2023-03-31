@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 
+type SetStateType<T> = React.Dispatch<React.SetStateAction<T>>;
+
 const VoiceSelect = ({
   voices,
   setter,
 }: {
   voices: SpeechSynthesisVoice[] | null;
-  setter: React.Dispatch<React.SetStateAction<number>>;
+  setter: SetStateType<number>;
 }) => (
   <select onChange={({ target }) => setter(parseInt(target.value))}>
     {(voices || []).map((voice, i) => (
@@ -23,7 +25,7 @@ const VoiceEditInput = ({
   setter,
 }: {
   value: number;
-  setter: React.Dispatch<React.SetStateAction<number>>;
+  setter: SetStateType<number>;
 }) => (
   <input
     type="range"
