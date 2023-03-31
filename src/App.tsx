@@ -21,6 +21,8 @@ const VoiceSelect = ({
 function App() {
   const synth = useRef<SpeechSynthesis | null>(null);
   const [text, setText] = useState("");
+  const [pitch, setPitch] = useState(1);
+  const [rate, setRate] = useState(1);
   const [availableVoices, setAvailableVoices] = useState<
     SpeechSynthesisVoice[] | null
   >(null);
@@ -43,6 +45,8 @@ function App() {
     ev.preventDefault();
     const utter = new SpeechSynthesisUtterance(text);
     utter.voice = availableVoices && availableVoices[selectedVoice];
+    utter.pitch = pitch;
+    utter.rate = rate;
 
     synth.current?.speak(utter);
     setText("");
@@ -67,7 +71,32 @@ function App() {
             Speak
           </button>
         </form>
-        {availableVoices && <VoiceSelect setter={setSelectedVoice} voices={availableVoices} />}
+        <p>rate</p>
+        <input
+          type="range"
+          onChange={({ target }) => setRate(parseFloat(target.value))}
+          value={rate}
+          step="0.1"
+          min="1"
+          max="2"
+        />
+
+        <p>pitch</p>
+        <input
+          type="range"
+          onChange={({ target }) => setPitch(parseFloat(target.value))}
+          step="0.1"
+          value={pitch}
+          min="1"
+          max="2"
+        />
+        <p>
+          pitch {pitch}, rate {rate}
+        </p>
+
+        {availableVoices && (
+          <VoiceSelect setter={setSelectedVoice} voices={availableVoices} />
+        )}
       </div>
     </div>
   );
