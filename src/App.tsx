@@ -1,5 +1,5 @@
 import { Button, Form, Input, Layout, Space, Typography } from "antd";
-import { SoundOutlined } from '@ant-design/icons';
+import { SoundOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { VoiceControl } from "./components/VoiceControl";
 import { VoiceSelect } from "./components/VoiceSelect";
@@ -25,7 +25,13 @@ function App() {
       onFinish={onSubmit}
     >
       <Typography.Title
-        style={{ textTransform: "uppercase", fontWeight: 900, color: "#444" }}
+        style={{
+          textTransform: "uppercase",
+          fontSize: '2rem',
+          textAlign: "center",
+          fontWeight: 900,
+          color: "#444",
+        }}
       >
         speech synthesieser
       </Typography.Title>
@@ -56,7 +62,12 @@ function App() {
         </Form.Item>
       </Space.Compact>
       <Form.Item>
-        <Button icon={<SoundOutlined />} htmlType="submit" disabled={!text.length} type="primary">
+        <Button
+          icon={<SoundOutlined />}
+          htmlType="submit"
+          disabled={!text.length}
+          type="primary"
+        >
           Speak
         </Button>
       </Form.Item>
