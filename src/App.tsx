@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
+import useSpeaker from "./hooks/useSpeaker";
 
 type SetStateType<T> = React.Dispatch<React.SetStateAction<T>>;
 
@@ -38,36 +39,16 @@ const VoiceEditInput = ({
 );
 
 function App() {
-  const synth = useRef<SpeechSynthesis | null>(null);
   const [text, setText] = useState("");
   const [pitch, setPitch] = useState(1);
   const [rate, setRate] = useState(1);
-  const [availableVoices, setAvailableVoices] = useState<
-    SpeechSynthesisVoice[] | null
-  >(null);
   const [selectedVoice, setSelectedVoice] = useState(0);
 
-  useEffect(() => {
-    if (window.speechSynthesis) {
-      synth.current = window.speechSynthesis;
-      setAvailableVoices(synth.current.getVoices());
-    }
-  }, []);
+  const { availableVoices, speak } = useSpeaker();
 
-  useEffect(() => {
-    if (synth.current && !availableVoices?.length) {
-      setAvailableVoices(synth.current.getVoices());
-    }
-  }, [availableVoices]);
-
-  const speak = (ev: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.voice = availableVoices && availableVoices[selectedVoice];
-    utter.pitch = pitch;
-    utter.rate = rate;
-
-    synth.current?.speak(utter);
+    speak({ text, rate, pitch, selectedVoice });
     setText("");
   };
 
@@ -80,7 +61,7 @@ function App() {
       </div>
       <h1>Speech Synthesieser</h1>
       <div className="card">
-        <form onSubmit={speak}>
+        <form onSubmit={onSubmit}>
           <input
             value={text}
             type="text"
