@@ -4,6 +4,7 @@ import "./App.css";
 
 function App() {
   const synth = useRef<SpeechSynthesis | null>(null);
+  const [text, setText] = useState("");
 
   useEffect(() => {
     if (window.speechSynthesis) {
@@ -11,8 +12,10 @@ function App() {
     }
   }, []);
 
-  const speak = () => {
-    synth.current?.speak(new SpeechSynthesisUtterance("hello"));
+  const speak = (ev: React.FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
+    synth.current?.speak(new SpeechSynthesisUtterance(text));
+    setText('')
   };
 
   return (
@@ -22,9 +25,12 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>Speech Synthesieser</h1>
       <div className="card">
-        <button onClick={speak}>Speak</button>
+        <form onSubmit={speak}>
+          <input value={text} type="text" onChange={({ target }) => setText(target.value)} />
+          <button disabled={!text.length} type="submit">Speak</button>
+        </form>
       </div>
     </div>
   );
