@@ -67,7 +67,7 @@ function App() {
             Speak
           </button>
         </form>
-        <VoiceSelect setter={setSelectedVoice} voices={availableVoices} />
+        {availableVoices && <VoiceSelect setter={setSelectedVoice} voices={availableVoices} />}
       </div>
     </div>
   );
