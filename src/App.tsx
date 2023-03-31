@@ -33,7 +33,7 @@ const VoiceEditInput = ({
     value={value}
     step="0.1"
     min="1"
-    max="2"
+    max="1.5"
   />
 );
 
