@@ -1,3 +1,5 @@
+import { Button, Form, Input, Layout, Space, Typography } from "antd";
+import { SoundOutlined } from '@ant-design/icons';
 import { useState } from "react";
 import { VoiceControl } from "./components/VoiceControl";
 import { VoiceSelect } from "./components/VoiceSelect";
@@ -11,40 +13,54 @@ function App() {
 
   const { availableVoices, speak } = useSpeaker();
 
-  const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
-    ev.preventDefault();
+  const onSubmit = () => {
     speak({ text, rate, pitch, selectedVoiceIdx });
     setText("");
   };
 
   return (
-    <div>
-      <h1>Speech Synthesieser</h1>
-      <div>
-        <form onSubmit={onSubmit}>
-          <input
+    <Form
+      layout="vertical"
+      style={{ maxWidth: 600, padding: "32px", margin: "0 auto" }}
+      onFinish={onSubmit}
+    >
+      <Typography.Title
+        style={{ textTransform: "uppercase", fontWeight: 900, color: "#444" }}
+      >
+        speech synthesieser
+      </Typography.Title>
+      <Space.Compact block>
+        <Form.Item style={{ width: "60%" }}>
+          <Input
             value={text}
+            placeholder="Type a text..."
             type="text"
             onChange={({ target }) => setText(target.value)}
           />
-          <button disabled={!text.length} type="submit">
-            Speak
-          </button>
-        </form>
-        <p>rate</p>
-        <VoiceControl setter={setRate} value={rate} />
-
-        <p>pitch</p>
-        <VoiceControl setter={setPitch} value={pitch} />
-        <p>
-          pitch {pitch}, rate {rate}
-        </p>
-
-        {availableVoices && (
-          <VoiceSelect setter={setSelectedVoiceIdx} voices={availableVoices} />
-        )}
-      </div>
-    </div>
+        </Form.Item>
+        <Form.Item style={{ width: "40%" }}>
+          {availableVoices && (
+            <VoiceSelect
+              setter={setSelectedVoiceIdx}
+              voices={availableVoices}
+            />
+          )}
+        </Form.Item>
+      </Space.Compact>
+      <Space.Compact block style={{ display: "flex", gap: "10px" }}>
+        <Form.Item label="Rate" style={{ width: "50%" }}>
+          <VoiceControl setter={setRate} value={rate} />
+        </Form.Item>
+        <Form.Item label="Pitch" style={{ width: "50%" }}>
+          <VoiceControl setter={setPitch} value={pitch} />
+        </Form.Item>
+      </Space.Compact>
+      <Form.Item>
+        <Button icon={<SoundOutlined />} htmlType="submit" disabled={!text.length} type="primary">
+          Speak
+        </Button>
+      </Form.Item>
+    </Form>
   );
 }
 

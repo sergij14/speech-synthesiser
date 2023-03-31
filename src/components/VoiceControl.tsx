@@ -1,3 +1,4 @@
+import { Slider } from "antd";
 import { SetStateType } from "../types";
 
 export const VoiceControl = ({
@@ -7,12 +8,12 @@ export const VoiceControl = ({
     value: number;
     setter: SetStateType<number>;
   }) => (
-    <input
-      type="range"
-      onChange={({ target }) => setter(parseFloat(target.value))}
+    <Slider
+      range={false}
+      onChange={(value) => setter(value)}
       value={value}
-      step="0.1"
-      min="1"
-      max="1.5"
+      step={0.1}
+      min={1}
+      max={1.5}
     />
   );
