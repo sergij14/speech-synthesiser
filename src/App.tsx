@@ -2,10 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 
-const VoiceSelect = ({ voices }: { voices?: SpeechSynthesisVoice[] }) => (
-  <select>
-    {(voices || []).map((voice) => (
-      <option key={voice.voiceURI} value={voice.name}>
+const VoiceSelect = ({
+  voices,
+  setter,
+}: {
+  voices: SpeechSynthesisVoice[] | null;
+  setter: React.Dispatch<React.SetStateAction<number>>;
+}) => (
+  <select onChange={({ target }) => setter(parseInt(target.value))}>
+    {(voices || []).map((voice, i) => (
+      <option key={voice.voiceURI} value={i}>
         {voice.name}
       </option>
     ))}
@@ -15,8 +21,10 @@ const VoiceSelect = ({ voices }: { voices?: SpeechSynthesisVoice[] }) => (
 function App() {
   const synth = useRef<SpeechSynthesis | null>(null);
   const [text, setText] = useState("");
-  const [availableVoices, setAvailableVoices] =
-    useState<SpeechSynthesisVoice[]>();
+  const [availableVoices, setAvailableVoices] = useState<
+    SpeechSynthesisVoice[] | null
+  >(null);
+  const [selectedVoice, setSelectedVoice] = useState(0);
 
   useEffect(() => {
     if (window.speechSynthesis) {
@@ -33,7 +41,10 @@ function App() {
 
   const speak = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    synth.current?.speak(new SpeechSynthesisUtterance(text));
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.voice = availableVoices && availableVoices[selectedVoice];
+
+    synth.current?.speak(utter);
     setText("");
   };
 
@@ -56,7 +67,7 @@ function App() {
             Speak
           </button>
         </form>
-        <VoiceSelect voices={availableVoices} />
+        <VoiceSelect setter={setSelectedVoice} voices={availableVoices} />
       </div>
     </div>
   );
