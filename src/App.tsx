@@ -1,42 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
+import { useState } from "react";
+import { VoiceControl } from "./components/VoiceControl";
+import { VoiceSelect } from "./components/VoiceSelect";
 import useSpeaker from "./hooks/useSpeaker";
-
-type SetStateType<T> = React.Dispatch<React.SetStateAction<T>>;
-
-const VoiceSelect = ({
-  voices,
-  setter,
-}: {
-  voices: SpeechSynthesisVoice[] | null;
-  setter: SetStateType<number>;
-}) => (
-  <select onChange={({ target }) => setter(parseInt(target.value))}>
-    {(voices || []).map((voice, i) => (
-      <option key={voice.voiceURI} value={i}>
-        {voice.name}
-      </option>
-    ))}
-  </select>
-);
-
-const VoiceEditInput = ({
-  value,
-  setter,
-}: {
-  value: number;
-  setter: SetStateType<number>;
-}) => (
-  <input
-    type="range"
-    onChange={({ target }) => setter(parseFloat(target.value))}
-    value={value}
-    step="0.1"
-    min="1"
-    max="1.5"
-  />
-);
 
 function App() {
   const [text, setText] = useState("");
@@ -53,14 +18,9 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
+    <div>
       <h1>Speech Synthesieser</h1>
-      <div className="card">
+      <div>
         <form onSubmit={onSubmit}>
           <input
             value={text}
@@ -72,10 +32,10 @@ function App() {
           </button>
         </form>
         <p>rate</p>
-        <VoiceEditInput setter={setRate} value={rate} />
+        <VoiceControl setter={setRate} value={rate} />
 
         <p>pitch</p>
-        <VoiceEditInput setter={setPitch} value={pitch} />
+        <VoiceControl setter={setPitch} value={pitch} />
         <p>
           pitch {pitch}, rate {rate}
         </p>
