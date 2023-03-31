@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 
+interface SpeakConfig {
+  text: string;
+  rate: number;
+  pitch: number;
+  selectedVoiceIdx: number;
+}
+
 const useSpeaker = () => {
   const synth = useRef<SpeechSynthesis | null>(null);
   const [availableVoices, setAvailableVoices] = useState<
@@ -19,9 +26,9 @@ const useSpeaker = () => {
     }
   }, [availableVoices]);
 
-  const speak = ({ text, rate, pitch, selectedVoice }: any) => {
+  const speak = ({ text, rate, pitch, selectedVoiceIdx }: SpeakConfig) => {
     const utter = new SpeechSynthesisUtterance(text);
-    utter.voice = availableVoices && availableVoices[selectedVoice];
+    utter.voice = availableVoices && availableVoices[selectedVoiceIdx];
     utter.pitch = pitch;
     utter.rate = rate;
 

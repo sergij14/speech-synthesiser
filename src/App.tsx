@@ -42,13 +42,13 @@ function App() {
   const [text, setText] = useState("");
   const [pitch, setPitch] = useState(1);
   const [rate, setRate] = useState(1);
-  const [selectedVoice, setSelectedVoice] = useState(0);
+  const [selectedVoiceIdx, setSelectedVoiceIdx] = useState(0);
 
   const { availableVoices, speak } = useSpeaker();
 
   const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    speak({ text, rate, pitch, selectedVoice });
+    speak({ text, rate, pitch, selectedVoiceIdx });
     setText("");
   };
 
@@ -81,7 +81,7 @@ function App() {
         </p>
 
         {availableVoices && (
-          <VoiceSelect setter={setSelectedVoice} voices={availableVoices} />
+          <VoiceSelect setter={setSelectedVoiceIdx} voices={availableVoices} />
         )}
       </div>
     </div>
