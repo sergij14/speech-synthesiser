@@ -13,10 +13,7 @@ function App() {
 
   const { availableVoices, speak } = useSpeaker();
 
-  const onSubmit = () => {
-    speak({ text, rate, pitch, selectedVoiceIdx });
-    setText("");
-  };
+  const onSubmit = () => speak({ text, rate, pitch, selectedVoiceIdx });
 
   return (
     <Form
@@ -27,13 +24,13 @@ function App() {
       <Typography.Title
         style={{
           textTransform: "uppercase",
-          fontSize: '2rem',
+          fontSize: "2rem",
           textAlign: "center",
           fontWeight: 900,
           color: "#444",
         }}
       >
-        speech synthesieser
+        speech synthesizer
       </Typography.Title>
       <Space.Compact block>
         <Form.Item style={{ width: "60%" }}>
@@ -53,7 +50,7 @@ function App() {
           )}
         </Form.Item>
       </Space.Compact>
-      <Space.Compact block style={{ display: "flex", gap: "10px" }}>
+      <Space.Compact block>
         <Form.Item label="Rate" style={{ width: "50%" }}>
           <VoiceControl setter={setRate} value={rate} />
         </Form.Item>
